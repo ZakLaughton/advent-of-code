@@ -14,11 +14,12 @@ const initialActiveCoordinates = getActiveCoordinatesFromInputLines(INPUT_LINES)
 
 let currentActiveCoordinates = initialActiveCoordinates;
 
-for (let i = 0; i < 6; i++) {
-  currentActiveCoordinates = getActiveCoordinatesAfterNextCycle(currentActiveCoordinates);
-}
+// Uncomment to get answer (long-running)
+// for (let i = 0; i < 6; i++) {
+//   currentActiveCoordinates = getActiveCoordinatesAfterNextCycle(currentActiveCoordinates);
+// }
 
-console.log("ANSWER>>>", currentActiveCoordinates.length);
+// console.log("ANSWER>>>", currentActiveCoordinates.length);
 
 export function getActiveCoordinatesFromInputLines(inputLines: string[]) {
   let activeCoordinates: Coordinate[] = [];
@@ -51,7 +52,7 @@ export function getNeighboringCoordinates(coordinate: Coordinate) {
 export function getActiveCoordinatesAfterNextCycle(currentActiveCoordinates: Coordinate[]) {
   const newActiveCoordinates = [...currentActiveCoordinates];
   const allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(currentActiveCoordinates);
-  evaluateCoordinatesLoop: for (const coordinate of allCoordinatesToEvaluate) {
+  for (const coordinate of allCoordinatesToEvaluate) {
     let activeNeighborCount = 0;
     const neighbors = getNeighboringCoordinates(coordinate);
     for (const neighbor of neighbors) {
