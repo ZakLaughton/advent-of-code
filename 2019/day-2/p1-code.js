@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const inputPath = `${__dirname}/p1-input.txt`;
 const inputData = fs.readFileSync(inputPath, 'utf8').split(',');
-const inputDataNumbers = inputData.map(item => Number(item));
+const inputDataNumbers = inputData.map((item) => Number(item));
 
 let currentPosition = 0;
 

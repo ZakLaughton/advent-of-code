@@ -1,8 +1,8 @@
-import { getInputByLine, removeDuplicateObjectsFromArray } from "../../utils";
-import { isEqual } from "lodash";
+import { getInputByLine, removeDuplicateObjectsFromArray } from '../../utils';
+import { isEqual } from 'lodash';
 
 // @ts-ignore
-const INPUT_LINES = getInputByLine(__dirname, "p1-input.txt");
+const INPUT_LINES = getInputByLine(__dirname, 'p1-input.txt');
 
 export interface Coordinate {
   x: number;
@@ -10,7 +10,9 @@ export interface Coordinate {
   z: number;
 }
 
-const initialActiveCoordinates = getActiveCoordinatesFromInputLines(INPUT_LINES);
+const initialActiveCoordinates = getActiveCoordinatesFromInputLines(
+  INPUT_LINES
+);
 
 let currentActiveCoordinates = initialActiveCoordinates;
 
@@ -26,7 +28,7 @@ export function getActiveCoordinatesFromInputLines(inputLines: string[]) {
   for (let lineIndex = 0; lineIndex < inputLines.length; lineIndex++) {
     const line = inputLines[lineIndex];
     for (let colNumber = 0; colNumber < line.length; colNumber++) {
-      if (line[colNumber] === "#") {
+      if (line[colNumber] === '#') {
         activeCoordinates.push({ x: colNumber, y: lineIndex, z: 0 });
       }
     }
@@ -49,9 +51,13 @@ export function getNeighboringCoordinates(coordinate: Coordinate) {
   return result;
 }
 
-export function getActiveCoordinatesAfterNextCycle(currentActiveCoordinates: Coordinate[]) {
+export function getActiveCoordinatesAfterNextCycle(
+  currentActiveCoordinates: Coordinate[]
+) {
   const newActiveCoordinates = [...currentActiveCoordinates];
-  const allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(currentActiveCoordinates);
+  const allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(
+    currentActiveCoordinates
+  );
   for (const coordinate of allCoordinatesToEvaluate) {
     let activeNeighborCount = 0;
     const neighbors = getNeighboringCoordinates(coordinate);
@@ -64,7 +70,10 @@ export function getActiveCoordinatesAfterNextCycle(currentActiveCoordinates: Coo
         break;
       }
     }
-    if (isCoordinateActive(coordinate) && (activeNeighborCount < 2 || activeNeighborCount > 3)) {
+    if (
+      isCoordinateActive(coordinate) &&
+      (activeNeighborCount < 2 || activeNeighborCount > 3)
+    ) {
       newActiveCoordinates.splice(
         newActiveCoordinates.findIndex((newActiveCoordinate) =>
           isEqual(coordinate, newActiveCoordinate)

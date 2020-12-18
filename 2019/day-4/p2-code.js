@@ -2,17 +2,20 @@ const input = [153517, 630395];
 const inputMin = input[0];
 const inputMax = input[1];
 
-const containsDoubles = password => {
+const containsDoubles = (password) => {
   const passwordArray = password.toString().split('');
   return passwordArray.some(
     (digit, index, array) =>
-      array[index + 1] === digit && array[index + 2] !== digit && array[index - 1] !== digit
+      array[index + 1] === digit &&
+      array[index + 2] !== digit &&
+      array[index - 1] !== digit
   );
 };
-const areAllNumbersIncreasing = password => {
+const areAllNumbersIncreasing = (password) => {
   const passwordArray = password.toString().split('');
   return passwordArray.every(
-    (digit, index, array) => digit <= array[index + 1] || index + 1 === array.length
+    (digit, index, array) =>
+      digit <= array[index + 1] || index + 1 === array.length
   );
 };
 

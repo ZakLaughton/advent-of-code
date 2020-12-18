@@ -1,10 +1,7 @@
-import {
-  getInputByLine,
-  removeDuplicateObjectsFromArray,
-} from "../../utils.ts";
-import isEqual from "lodash/isEqual.js";
+import { getInputByLine, removeDuplicateObjectsFromArray } from '../../utils';
+import isEqual from 'lodash/isEqual.js';
 
-const INPUT_LINES = getInputByLine(__dirname, "p1-input.txt");
+const INPUT_LINES = getInputByLine(__dirname, 'p1-input.txt');
 
 const initialActiveCoordinates = getActiveCoordinatesFromInputLines(
   INPUT_LINES
@@ -25,7 +22,8 @@ export const getAnswer = () => {
       currentActiveCoordinates
     );
   }
-  console.log("Answer>>>", currentActiveCoordinates.length);
+  // @ts-ignore
+  console.log('Answer>>>', currentActiveCoordinates.length);
 };
 
 export function getActiveCoordinatesFromInputLines(inputLines) {
@@ -36,7 +34,7 @@ export function getActiveCoordinatesFromInputLines(inputLines) {
       characterNumber < inputLines[lineNumber].length;
       characterNumber++
     ) {
-      if (inputLines[lineNumber][characterNumber] === "#") {
+      if (inputLines[lineNumber][characterNumber] === '#') {
         activeCoordinates.push({
           w: 0,
           x: characterNumber,

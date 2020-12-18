@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const calculateFuelNeededForFuel = fuelMass => {
+const calculateFuelNeededForFuel = (fuelMass) => {
   let response = Math.floor(Number(fuelMass) / 3) - 2;
   if (response > 0) {
     console.log(`Adding to ${response}`);

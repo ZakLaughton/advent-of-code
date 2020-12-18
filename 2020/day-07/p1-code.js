@@ -1,9 +1,9 @@
-const { getInputByLine } = require("../../utils");
+const { getInputByLine } = require('../../utils');
 
-const rules = getInputByLine(__dirname, "p1-input.txt");
+const rules = getInputByLine(__dirname, 'p1-input.txt');
 
 const bagContentsRules = translateInputTextToObject(rules);
-const allBags = getAllBagsThatContainAColor("shiny gold");
+const allBags = getAllBagsThatContainAColor('shiny gold');
 console.log(allBags.length);
 
 function translateInputTextToObject(rules) {
@@ -16,7 +16,7 @@ function translateInputTextToObject(rules) {
   return bagContents;
 
   function getColorOfContainingBags(input) {
-    const [bagColor, contentsString] = input.split(" bags contain ");
+    const [bagColor, contentsString] = input.split(' bags contain ');
     const contentsObject = translateContentsStringToObject(contentsString);
     return [bagColor, contentsObject];
   }

@@ -1,6 +1,6 @@
-const { getInputByLine } = require("../../utils");
+const { getInputByLine } = require('../../utils');
 
-const inputLines = getInputByLine(__dirname, "p1-input.txt");
+const inputLines = getInputByLine(__dirname, 'p1-input.txt');
 
 const { fields, myTicket, nearbyTickets } = separateInput(inputLines);
 const possibleValuesForEachField = {};
@@ -15,7 +15,7 @@ for (let field of fields) {
 const allValidNumbers = getAllValidNumbersFromFields(fields);
 let validTickets = nearbyTickets.filter((ticket) =>
   ticket
-    .split(",")
+    .split(',')
     .every((value) =>
       allValidNumbers.some(
         (validNumber) => Number(validNumber) === Number(value)
@@ -25,12 +25,12 @@ let validTickets = nearbyTickets.filter((ticket) =>
 
 validTickets.push(myTicket);
 let possibleFieldsForEachValue = Array.from(
-  { length: myTicket.split(",").length },
+  { length: myTicket.split(',').length },
   () => Object.keys(possibleValuesForEachField)
 );
 
 for (let ticket of validTickets) {
-  for (const [index, ticketValue] of ticket.split(",").entries()) {
+  for (const [index, ticketValue] of ticket.split(',').entries()) {
     for (let possibleField of possibleFieldsForEachValue[index]) {
       if (
         !possibleValuesForEachField[possibleField].some(
@@ -50,7 +50,7 @@ console.log(possibleFieldsForEachValue);
 
 function separateInput(input) {
   const yourTicketTitleIndex = input.findIndex(
-    (lineItem) => lineItem === "your ticket:"
+    (lineItem) => lineItem === 'your ticket:'
   );
   return {
     fields: input.slice(0, yourTicketTitleIndex - 1),

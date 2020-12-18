@@ -1,13 +1,13 @@
-const { getInputByLine } = require("../../utils");
+const { getInputByLine } = require('../../utils');
 
-const inputLines = getInputByLine(__dirname, "p1-input.txt");
+const inputLines = getInputByLine(__dirname, 'p1-input.txt');
 
 // split rules into fields, my ticket, and other tickets
 const { fields, myTicket, nearbyTickets } = separateInput(inputLines);
 const validNumbers = getAllValidNumbersFromFields(fields);
 const totalErrorRate = nearbyTickets.reduce((accumulator, currentTicket) => {
   const ticketErrorRate = currentTicket
-    .split(",")
+    .split(',')
     .reduce((accumulator, currentValue) => {
       if (!validNumbers.some((number) => number === Number(currentValue))) {
         return accumulator + Number(currentValue);
@@ -20,7 +20,7 @@ console.log(totalErrorRate);
 
 function separateInput(input) {
   const yourTicketTitleIndex = input.findIndex(
-    (lineItem) => lineItem === "your ticket:"
+    (lineItem) => lineItem === 'your ticket:'
   );
   return {
     fields: input.slice(0, yourTicketTitleIndex - 1),

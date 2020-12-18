@@ -4,19 +4,28 @@ const inputPath = `${__dirname}/p1-input.txt`;
 const data = fs
   .readFileSync(inputPath, 'utf8')
   .split('\n')
-  .map(wireDirections => wireDirections.split(','));
+  .map((wireDirections) => wireDirections.split(','));
 
-const getPathCoordinatesFromDirections = directions => {
+const getPathCoordinatesFromDirections = (directions) => {
   const startingStatus = { currentPosition: [0, 0], pathTravelled: [] };
-  const { pathTravelled } = directions.reduce(getPathCoordinatesFromDirection, startingStatus);
+  const { pathTravelled } = directions.reduce(
+    getPathCoordinatesFromDirection,
+    startingStatus
+  );
   return pathTravelled;
 };
 
 const getPathCoordinatesFromDirection = (currentStatus, direction) => {
   const { currentPosition, pathTravelled } = currentStatus;
   const endPoint = getEndPoint(currentPosition, direction);
-  const addedCoordinates = getStraightLineCoordinates(currentPosition, endPoint);
-  return { currentPosition: endPoint, pathTravelled: [...pathTravelled, ...addedCoordinates] };
+  const addedCoordinates = getStraightLineCoordinates(
+    currentPosition,
+    endPoint
+  );
+  return {
+    currentPosition: endPoint,
+    pathTravelled: [...pathTravelled, ...addedCoordinates],
+  };
 };
 
 const getEndPoint = (startingPoint, direction) => {
@@ -47,8 +56,8 @@ const getStraightLineCoordinates = (startPoint, endPoint) => {
   const yPath = getAllNumbersBetween(startY, endY);
   const lineCoordinates =
     xPath.length === 0
-      ? yPath.map(yCoordinate => [startX, yCoordinate])
-      : xPath.map(xCoordinate => [xCoordinate, startY]);
+      ? yPath.map((yCoordinate) => [startX, yCoordinate])
+      : xPath.map((xCoordinate) => [xCoordinate, startY]);
 
   return lineCoordinates;
 };
@@ -74,8 +83,10 @@ const getAllNumbersBetween = (startNumber, endNumber) => {
 };
 
 const findFirstCrossingPoint = (path1, path2) => {
-  return path1.find(path1Coordinate =>
-    path2.find(path2Coordinate => doCoordinatesMatch(path1Coordinate, path2Coordinate))
+  return path1.find((path1Coordinate) =>
+    path2.find((path2Coordinate) =>
+      doCoordinatesMatch(path1Coordinate, path2Coordinate)
+    )
   );
 };
 
