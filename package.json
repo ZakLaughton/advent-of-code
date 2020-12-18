@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "repository": {
     "type": "git",
@@ -17,7 +22,12 @@
   },
   "homepage": "https://github.com/ZakLaughton/advent-of-code#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.19",
     "@types/node": "^14.14.14",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
     "lodash": "^4.17.20"
   },
   "dependencies": {}

@@ -10,16 +10,12 @@ export interface Coordinate {
   z: number;
 }
 
-const initialActiveCoordinates = getActiveCoordinatesFromInputLines(
-  INPUT_LINES
-);
+const initialActiveCoordinates = getActiveCoordinatesFromInputLines(INPUT_LINES);
 
 let currentActiveCoordinates = initialActiveCoordinates;
 
 for (let i = 0; i < 6; i++) {
-  currentActiveCoordinates = getActiveCoordinatesAfterNextCycle(
-    currentActiveCoordinates
-  );
+  currentActiveCoordinates = getActiveCoordinatesAfterNextCycle(currentActiveCoordinates);
 }
 
 console.log("ANSWER>>>", currentActiveCoordinates.length);
@@ -52,13 +48,9 @@ export function getNeighboringCoordinates(coordinate: Coordinate) {
   return result;
 }
 
-export function getActiveCoordinatesAfterNextCycle(
-  currentActiveCoordinates: Coordinate[]
-) {
+export function getActiveCoordinatesAfterNextCycle(currentActiveCoordinates: Coordinate[]) {
   const newActiveCoordinates = [...currentActiveCoordinates];
-  const allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(
-    currentActiveCoordinates
-  );
+  const allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(currentActiveCoordinates);
   evaluateCoordinatesLoop: for (const coordinate of allCoordinatesToEvaluate) {
     let activeNeighborCount = 0;
     const neighbors = getNeighboringCoordinates(coordinate);
@@ -68,13 +60,10 @@ export function getActiveCoordinatesAfterNextCycle(
       }
       // No further changes happen after 4 active neighbors
       if (activeNeighborCount === 4) {
-        continue evaluateCoordinatesLoop;
+        break;
       }
     }
-    if (
-      isCoordinateActive(coordinate) &&
-      (activeNeighborCount < 2 || activeNeighborCount > 3)
-    ) {
+    if (isCoordinateActive(coordinate) && (activeNeighborCount < 2 || activeNeighborCount > 3)) {
       newActiveCoordinates.splice(
         newActiveCoordinates.findIndex((newActiveCoordinate) =>
           isEqual(coordinate, newActiveCoordinate)
