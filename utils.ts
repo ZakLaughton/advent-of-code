@@ -1,13 +1,13 @@
-const fs = require('fs');
-import { isEqual, uniqWith } from 'lodash';
+const { readFileSync } = require('fs');
+const { isEqual, uniqWith } = require('lodash');
 
-function getInputByLine(directory, fileName) {
+function getInputByLine(directory: string, fileName: string) {
   const inputPath = `${directory}/${fileName}`;
-  return fs.readFileSync(inputPath, 'utf8').split('\n');
+  return readFileSync(inputPath, 'utf8').split('\n');
 }
 
-function removeDuplicateObjectsFromArray(objectArray) {
+function removeDuplicateObjectsFromArray<T>(objectArray: T[]): T[] {
   return uniqWith(objectArray, isEqual);
 }
 
-export { getInputByLine, removeDuplicateObjectsFromArray };
+module.exports = { getInputByLine, removeDuplicateObjectsFromArray };

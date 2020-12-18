@@ -1,27 +1,31 @@
-import {
-  // @ts-expect-error
+const {
   getActiveCoordinatesFromInputLines,
   getNeighboringCoordinates,
-  Coordinate,
-  // @ts-expect-error
   getAllCoordinatesToEvaluate,
   getActiveCoordinatesAfterNextCycle,
   getAnswer,
-} from './p2-code';
+} = require('./p2-code');
+import { Coordinate } from './p2-code';
 
-// describe('getActiveCoordinatesFromInputLines', () => {
-//   it('returns list of coordinates from the input', () => {
-//     const input = ['..#', '#..', '.#.'];
+describe.skip('getAnswer', () => {
+  it('has the same amount of results as the example at https://adventofcode.com/2020/day/17', () => {
+    getAnswer(['.#.', '..#', '###']);
+  });
+});
 
-//     const result = getActiveCoordinatesFromInputLines(input);
+describe('getActiveCoordinatesFromInputLines', () => {
+  it('returns list of coordinates from the input', () => {
+    const input = ['..#', '#..', '.#.'];
 
-//     expect(result).toEqual([
-//       { x: 2, y: 0, z: 0 },
-//       { x: 0, y: 1, z: 0 },
-//       { x: 1, y: 2, z: 0 },
-//     ]);
-//   });
-// });
+    const result = getActiveCoordinatesFromInputLines(input);
+
+    expect(result).toEqual([
+      { w: 0, x: 2, y: 0, z: 0 },
+      { w: 0, x: 0, y: 1, z: 0 },
+      { w: 0, x: 1, y: 2, z: 0 },
+    ]);
+  });
+});
 
 describe('getSurroundingCoordinates', () => {
   it('returns the 80 results fo neighboring locations', () => {
@@ -33,16 +37,16 @@ describe('getSurroundingCoordinates', () => {
   });
 });
 
-// describe('getAllCoordinatesToEvaluate', () => {
-//   it('returns the correct number of coordinates when given 2 coordinates and one neighbor is overlapping', () => {
-//     const input: Coordinate[] = [
-//       { w: 0, x: 0, y: 0, z: 0 },
-//       { w: 2, x: 2, y: 2, z: 2 },
-//     ];
-//     // @ts-ignore - Property 'length' does not exist on type 'void'.
-//     expect(getAllCoordinatesToEvaluate(input).length).toEqual(53);
-//   });
-// });
+describe('getAllCoordinatesToEvaluate', () => {
+  it('returns the correct number of coordinates when given 2 coordinates and one neighbor is overlapping', () => {
+    const input: Coordinate[] = [
+      { w: 0, x: 0, y: 0, z: 0 },
+      { w: 2, x: 2, y: 2, z: 2 },
+    ];
+    // @ts-ignore - Property 'length' does not exist on type 'void'.
+    expect(getAllCoordinatesToEvaluate(input).length).toEqual(161);
+  });
+});
 
 describe('getActiveCoordinatesAfterNextCycle', () => {
   it('does nothing to an active coordinate with 2 active neighbors', () => {
@@ -116,12 +120,6 @@ describe('getActiveCoordinatesAfterNextCycle', () => {
     ];
     const newActiveCoordinates = getActiveCoordinatesAfterNextCycle(input);
     expect(newActiveCoordinates.length).toEqual(29);
-  });
-});
-
-describe('answer', () => {
-  it('runs', () => {
-    getAnswer();
   });
 });
 
