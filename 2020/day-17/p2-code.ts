@@ -2,22 +2,17 @@
 
 const {
   getInputByLine,
-  removeDuplicateObjectsFromArray,
+  // removeDuplicateObjectsFromArray,
 } = require('../../utils');
-const isEqual = require('lodash/isEqual');
+// const isEqual = require('lodash/isEqual');
 
 // @ts-ignore
 const INPUT_LINES = getInputByLine(__dirname, 'p1-input.txt');
-interface Coordinate {
-  w: number;
-  x: number;
-  y: number;
-  z: number;
-}
+export type Coordinate = string;
 
 getAnswer();
 
-function getAnswer(inputLines: string[] = INPUT_LINES) {
+export function getAnswer(inputLines: string[] = INPUT_LINES) {
   const initialActiveCoordinates = getActiveCoordinatesFromInputLines(
     inputLines
   );
@@ -25,21 +20,21 @@ function getAnswer(inputLines: string[] = INPUT_LINES) {
   let currentActiveCoordinates = initialActiveCoordinates;
   for (let i = 0; i < 6; i++) {
     console.log(
-      `Running iteration number ${i} with ${currentActiveCoordinates.length} possibilities`
+      `Running iteration number ${i} with ${currentActiveCoordinates.size} possibilities`
     );
     currentActiveCoordinates = getActiveCoordinatesAfterNextCycle(
       currentActiveCoordinates
     );
     console.log(
       `Total for iteration number ${i}:`,
-      currentActiveCoordinates.length
+      currentActiveCoordinates.size
     );
   }
-  console.log('Answer>>>', currentActiveCoordinates.length);
+  console.log('Answer>>>', currentActiveCoordinates.size);
 }
 
-function getActiveCoordinatesFromInputLines(inputLines: string[]) {
-  let activeCoordinates = [];
+export function getActiveCoordinatesFromInputLines(inputLines: string[]) {
+  let activeCoordinates: Set<Coordinate> = new Set();
   for (let lineNumber = 0; lineNumber < inputLines.length; lineNumber++) {
     for (
       let characterNumber = 0;
@@ -47,33 +42,31 @@ function getActiveCoordinatesFromInputLines(inputLines: string[]) {
       characterNumber++
     ) {
       if (inputLines[lineNumber][characterNumber] === '#') {
-        activeCoordinates.push({
-          w: 0,
-          x: characterNumber,
-          y: lineNumber,
-          z: 0,
-        });
+        activeCoordinates.add(`0,${characterNumber},${lineNumber},0`);
       }
     }
   }
   return activeCoordinates;
 }
 
-function getNeighboringCoordinates(coordinate: Coordinate) {
+export function getNeighboringCoordinates(coordinate: Coordinate) {
+  const [originW, originX, originY, originZ] = coordinate
+    .split(',')
+    .map((value) => Number(value));
   const result: Coordinate[] = [];
-  for (let w = coordinate.w - 1; w <= coordinate.w + 1; w++) {
-    for (let x = coordinate.x - 1; x <= coordinate.x + 1; x++) {
-      for (let y = coordinate.y - 1; y <= coordinate.y + 1; y++) {
-        for (let z = coordinate.z - 1; z <= coordinate.z + 1; z++) {
+  for (let w = originW - 1; w <= originW + 1; w++) {
+    for (let x = originX - 1; x <= originX + 1; x++) {
+      for (let y = originY - 1; y <= originY + 1; y++) {
+        for (let z = originZ - 1; z <= originZ + 1; z++) {
           if (
-            w === coordinate.w &&
-            x === coordinate.x &&
-            y === coordinate.y &&
-            z === coordinate.z
+            w === originW &&
+            x === originX &&
+            y === originY &&
+            z === originZ
           ) {
             continue;
           }
-          result.push({ w, x, y, z });
+          result.push(`${w},${x},${y},${z}`);
         }
       }
     }
@@ -81,28 +74,17 @@ function getNeighboringCoordinates(coordinate: Coordinate) {
   return result;
 }
 
-function getActiveCoordinatesAfterNextCycle(
-  currentActiveCoordinates: Coordinate[]
+export function getActiveCoordinatesAfterNextCycle(
+  currentActiveCoordinates: Set<Coordinate>
 ) {
-  const newActiveCoordinates: Coordinate[] = [];
-  console.log(
-    'newActiveCoordinates length>>>',
-    currentActiveCoordinates.length
-  );
-  console.log('start');
-  let allCoordinatesToEvaluate = getAllCoordinatesToEvaluate(
-    currentActiveCoordinates
-  );
-  console.log('end');
-  for (
-    let coordinateIndex = 0;
-    coordinateIndex < allCoordinatesToEvaluate.length;
-    coordinateIndex++
-  ) {
+  const newActiveCoordinates: Set<Coordinate> = new Set();
+  let allCoordinatesToEvaluate = getAllCoordinatesToEvaluate([
+    ...currentActiveCoordinates,
+  ]);
+  let evaluateCount = 0;
+  allCoordinatesToEvaluate.forEach((coordinate) => {
     let activeNeighborCount = 0;
-    const neighbors = getNeighboringCoordinates(
-      allCoordinatesToEvaluate[coordinateIndex]
-    );
+    const neighbors = getNeighboringCoordinates(coordinate);
     for (const neighbor of neighbors) {
       if (isCoordinateActive(neighbor)) {
         activeNeighborCount += 1;
@@ -112,27 +94,23 @@ function getActiveCoordinatesAfterNextCycle(
         break;
       }
     }
-    if (coordinateIndex % 100 === 0) {
-      console.log(
-        `Finished evaluating neighbors for ${coordinateIndex} of ${allCoordinatesToEvaluate.length}`
-      );
-    }
 
     if (
       activeNeighborCount === 3 ||
-      (isCoordinateActive(allCoordinatesToEvaluate[coordinateIndex]) &&
-        activeNeighborCount < 2)
+      (isCoordinateActive(coordinate) && activeNeighborCount === 2)
     ) {
-      newActiveCoordinates.push(allCoordinatesToEvaluate[coordinateIndex]);
+      newActiveCoordinates.add(coordinate);
     }
-  }
+    evaluateCount += 1;
+    if (evaluateCount % 100 === 0) {
+      console.log(`Finished ${evaluateCount}`);
+    }
+  });
 
   return newActiveCoordinates;
 
   function isCoordinateActive(coordinate: Coordinate) {
-    return currentActiveCoordinates.some((activeCoordinate) =>
-      isEqual(activeCoordinate, coordinate)
-    );
+    return currentActiveCoordinates.has(coordinate);
   }
 }
 
@@ -140,23 +118,28 @@ function getActiveCoordinatesAfterNextCycle(
  * Gets all active coordinates and their neighbors and returns an array with
  * no duplicates
  */
-function getAllCoordinatesToEvaluate(activeCoordinates: Coordinate[]) {
-  let result: Coordinate[] = [];
+export function getAllCoordinatesToEvaluate(activeCoordinates: Coordinate[]) {
+  let result: Set<string> = new Set();
   for (const coordinate of activeCoordinates) {
+    result.add(coordinate);
     const neighbors = getNeighboringCoordinates(coordinate);
-    result = result.concat([coordinate], neighbors);
+    result = new Set([...result, ...neighbors]);
   }
-  const unduplicated = removeDuplicateObjectsFromArray(result);
-  console.log('result:', result.length, 'unduplicated:', unduplicated.length);
-  return unduplicated;
+  return result;
 }
 
-module.exports = {
-  getAnswer,
-  getActiveCoordinatesAfterNextCycle,
-  getActiveCoordinatesFromInputLines,
-  getAllCoordinatesToEvaluate,
-  getNeighboringCoordinates,
-};
+export function encodeCoordinateToString(coordinate: Coordinate): string {
+  return Object.values(coordinate).join(',');
+}
 
-export { Coordinate };
+// function encodeCoordinateToObject(
+//   coordinateString: string
+// ): { w: number; x: number; y: number; z: number } {
+//   const coordinateArray = coordinateString.split(',');
+//   return {
+//     w: Number(coordinateArray[0]),
+//     x: Number(coordinateArray[1]),
+//     y: Number(coordinateArray[2]),
+//     z: Number(coordinateArray[3]),
+//   };
+// }
