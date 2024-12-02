@@ -1,7 +1,10 @@
-import { test } from "../../utils";
+const fs = require('fs');
 
-function add(a: number, b: number): number {
-    return a + b;
-}
+// @ts-expect-error
+fs.readFile('p1-input.txt', (err, data) => {
+  if (err) throw err;
 
-test(add, [1, 2], 3);
+  console.log(data.toString());
+});
+
+// test(add, [1, 2], 3);
