@@ -1,5 +1,10 @@
 import { getTextInputFromFileInLines, test } from '../../utils';
 
+/* TODO: Improvement ideas
+- This is verrry slow. Took several minutes to execute. Will be much faster if using a 2D array instead
+- remove the redundant for loops
+*/
+
 /** TYPES */
 type Command = 'toggle' | 'turn off' | 'turn on';
 type Coordinates = [number, number];
