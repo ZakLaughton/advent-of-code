@@ -23,32 +23,10 @@ export function getTextInputFromFile(file: string) {
   return fs.readFileSync(file).toString();
 }
 
-function splitTextInputIntoLines(input: string): string[] {
-  return input.split('\n');
+export function getTextInputFromFileInLines(file: string) {
+  return splitTextInputIntoLines(getTextInputFromFile(file));
 }
 
-/**
- * TESTS
- */
-
-const splitTextInputIntoLinesInput = `69214   60950
-83241   49638
-37930   31308
-50722   94914
-93164   82798
-80918   72850
-17490   79421`;
-
-test(
-  splitTextInputIntoLines,
-  [splitTextInputIntoLinesInput],
-  [
-    '69214   60950',
-    '83241   49638',
-    '37930   31308',
-    '50722   94914',
-    '93164   82798',
-    '80918   72850',
-    '17490   79421',
-  ]
-);
+export function splitTextInputIntoLines(input: string): string[] {
+  return input.split('\n');
+}
