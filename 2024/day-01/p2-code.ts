@@ -1,6 +1,3 @@
-// @ts-nocheck
-
-import { get } from 'lodash';
 import { getTextInputFromFile, test } from '../../utils';
 
 const leftNumbers = [];
@@ -38,13 +35,6 @@ function splitTextInputIntoLines(input: string): string[] {
   return input.split('\n');
 }
 
-function getSimilarityScoreBetweenLists(
-  left: number[],
-  right: number[]
-): number {
-  // Count number of times items in list 1 appears in list 2
-}
-
 function countNumberOccurrencesInList(number: number, list: number[]): number {
   let count = 0;
   for (const item of list) {
@@ -60,7 +50,7 @@ function getNumberOccurrencesInList1InList2(
   list1: number[],
   list2: number[]
 ): { [key: number]: number } {
-  const occurrences = {};
+  const occurrences: { [key: number]: number } = {};
   for (const number of list1) {
     if (occurrences[number] === undefined) {
       occurrences[number] = countNumberOccurrencesInList(number, list2);

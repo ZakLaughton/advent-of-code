@@ -1,9 +1,4 @@
-// @ts-nocheck
-import {
-  getTextInputFromFile,
-  getTextInputFromFileInLines,
-  test,
-} from '../../utils';
+import { getTextInputFromFile, test } from '../../utils';
 
 const inputLines = getTextInputFromFile('./p1-input.txt');
 console.log('Answer>>>', getNumberOfSafeLines(inputLines));

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { getTextInputFromFile, test } from '../../utils';
 
 const leftNumbers = [];

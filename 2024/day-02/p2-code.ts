@@ -1,9 +1,4 @@
-// @ts-nocheck
-import {
-  getTextInputFromFile,
-  getTextInputFromFileInLines,
-  test,
-} from '../../utils';
+import { getTextInputFromFile, test } from '../../utils';
 
 const inputLines = getTextInputFromFile('./p1-input.txt');
 console.log('Answer>>>', getNumberOfSafeLines(inputLines));
@@ -42,7 +37,7 @@ function isLineSafe(report: string): boolean {
 }
 
 // Tests if the line is safe after any level is removed
-function isLineSafeWithDamper(report) {
+function isLineSafeWithDamper(report: string): boolean {
   const levels = report.split(' ');
   for (let i = 0; i < levels.length; i++) {
     const newLevels = levels.slice(0, i).concat(levels.slice(i + 1));
