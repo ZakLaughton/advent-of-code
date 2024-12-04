@@ -3,12 +3,12 @@ import { test } from '../../utils';
 
 type Operation = 'ASSIGN' | 'AND' | 'OR' | 'NOT' | 'LSHIFT' | 'RSHIFT';
 type ParsedInstruction = {
-  operation: Operation;
+  operationName: Operation;
   input: (string | number)[];
   assignee: string;
 };
 type ParsedOperation = {
-  operation: Operation;
+  operationName: Operation;
   input: (string | number)[];
 };
 
@@ -19,32 +19,34 @@ function parseInstruction(instruction: string): ParsedInstruction {
   const match = instruction.match(regex);
 
   const [, operation, assignee] = match;
-  console.log('match>>>', match);
+  const { operationName, input } = parseOperation(operation);
+
+  return { operationName, input, assignee };
 }
 
 // parses the operation part of an instruction
-function parseOperation(operationInput: string): ParsedOperation {
+function parseOperation(operationString: string): ParsedOperation {
   //   console.log('Parsing operation:', operation);
-  let operation = '';
+  let operationName = '';
   let input = [];
   // test for NOT
-  if (operationInput.substring(0, 3) === 'NOT') {
-    operation = 'NOT';
+  if (operationString.substring(0, 3) === 'NOT') {
+    operationName = 'NOT';
     const regex = /NOT (\w+)$/;
-    const match = operationInput.match(regex);
+    const match = operationString.match(regex);
     input.push(match[1]);
 
-    return { operation, input };
+    return { operationName, input };
   }
 }
 
 /** TESTS */
 console.log('\n\n🧪 Testing parseInstruction');
-// test(parseInstruction, ['NOT dq -> dr'], {
-//   operation: 'NOT',
-//   input: ['dq'],
-//   assignee: 'dr',
-// });
+test(parseInstruction, ['NOT dq -> dr'], {
+  operationName: 'NOT',
+  input: ['dq'],
+  assignee: 'dr',
+});
 // test(parseInstruction, ['kg OR kf -> kh'], {
 //   operation: 'OR',
 //   input: ['kg', 'kf'],
@@ -73,7 +75,7 @@ console.log('\n\n🧪 Testing parseInstruction');
 
 console.log('\n\n🧪 Testing parseOperation');
 test(parseOperation, ['NOT dq'], {
-  operation: 'NOT',
+  operationName: 'NOT',
   input: ['dq'],
 });
 // test(parseOperation, ['kg OR kf'], {
