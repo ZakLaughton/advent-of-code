@@ -1,4 +1,9 @@
-import { test } from '../../utils';
+import { getTextInputFromFileInLines, test } from '../../utils';
+
+const input = getTextInputFromFileInLines('./input.txt');
+console.log('ANSWER>>>', countAllWord(input, 'XMAS'));
+
+/** FUNCTIONS */
 
 // Takes an array of lines from word search. Returns the times a
 // given word appears horizontal, vertical, and diagonally, both
@@ -10,12 +15,24 @@ function countAllWord(input: string[], wordToFind: string) {
     let letterIndex = 0;
     for (const letter of row) {
       if (letter === wordToFind[0]) {
-        //              test up-left
-        //              test up
-        //              test up-right
-        //              test down-left
-        //              test down
-        //              test down-right
+        if (isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'upLeft'))
+          count++;
+        if (isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'up'))
+          count++;
+        if (
+          isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'upRight')
+        )
+          count++;
+        if (
+          isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'downLeft')
+        )
+          count++;
+        if (isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'down'))
+          count++;
+        if (
+          isWordMatched(input, [rowIndex, letterIndex], wordToFind, 'downRight')
+        )
+          count++;
       }
       letterIndex++;
     }
@@ -59,14 +76,31 @@ function isWordMatched(
   };
   let currentCoordinates = startingCoordinates;
   for (const letter of word) {
-    const x = currentCoordinates[0];
-    const y = currentCoordinates[1];
-    const currentLetterOnMap = letterMap[x][y];
+    const rowIndex = currentCoordinates[0];
+    const letterIndex = currentCoordinates[1];
+
+    // return false if coordinates are out of bounds
+    if (
+      rowIndex < 0 ||
+      rowIndex > letterMap.length - 1 ||
+      letterIndex < 0 ||
+      letterIndex > letterMap[rowIndex].length - 1
+    ) {
+      return false;
+    }
+    const currentLetterOnMap = letterMap[rowIndex][letterIndex] || undefined;
+    // console.log(rowIndex, letterIndex, letter, currentLetterOnMap);
     if (currentLetterOnMap === undefined || letter !== currentLetterOnMap) {
       return false;
     }
+    // console.log(
+    //   'directionDelta:',
+    //   directionDelta[direction][0],
+    //   directionDelta[direction][1]
+    // );
     currentCoordinates[0] += directionDelta[direction][0];
     currentCoordinates[1] += directionDelta[direction][1];
+    // console.log('ending loop. going to next...');
   }
   return true;
 }
