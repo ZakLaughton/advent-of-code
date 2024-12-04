@@ -85,6 +85,23 @@ function parseOperation(operationString: string): ParsedOperation {
   }
 }
 
+function evaluateOperation(operationName: Operation, input: number[]) {
+  switch (operationName) {
+    case 'ASSIGN':
+      return input[0];
+    case 'NOT':
+      return ~input[0] & 0xffff;
+    case 'AND':
+      return input[0] & input[1] & 0xffff;
+    case 'OR':
+      return input[0] | (input[1] & 0xffff);
+    case 'RSHIFT':
+      return (input[0] >> input[1]) & 0xffff;
+    case 'LSHIFT':
+      return (input[0] << input[1]) & 0xffff;
+  }
+}
+
 function isNumber(character: string): boolean {
   return character >= '0' && character <= '9';
 }
@@ -163,3 +180,11 @@ test(parseOperation, ['bk LSHIFT 1'], {
 console.log('\n\n🧪 Testing isNumber');
 test(isNumber, ['1'], true);
 test(isNumber, ['a'], false);
+
+console.log('\n\n🧪 Testing evaluateOperation');
+test(evaluateOperation, ['ASSIGN', [1]], 1);
+test(evaluateOperation, ['NOT', [123]], 65412);
+test(evaluateOperation, ['AND', [30, 20]], 20);
+test(evaluateOperation, ['OR', [31, 22]], 31);
+test(evaluateOperation, ['RSHIFT', [8, 2]], 2);
+test(evaluateOperation, ['LSHIFT', [8, 2]], 32);
