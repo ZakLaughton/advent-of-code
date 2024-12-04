@@ -38,6 +38,23 @@ function parseOperation(operationString: string): ParsedOperation {
 
     return { operationName, input };
   }
+  // test for OR
+  if (operationString.includes('OR')) {
+    operationName = 'OR';
+    const regex = /(\w+) OR (\w+)$/;
+    const match = operationString.match(regex);
+    input.push(match[1], match[2]);
+
+    return { operationName, input };
+  }
+  // test for assignment
+  if (typeof Number(operationString[0]) === 'number') {
+    console.log('Testing for assignment');
+    operationName = 'ASSIGN';
+    input.push(Number(operationString));
+
+    return { operationName, input };
+  }
 }
 
 /** TESTS */
@@ -47,16 +64,16 @@ test(parseInstruction, ['NOT dq -> dr'], {
   input: ['dq'],
   assignee: 'dr',
 });
-// test(parseInstruction, ['kg OR kf -> kh'], {
-//   operation: 'OR',
-//   input: ['kg', 'kf'],
-//   assignee: 'kh',
-// });
-// test(parseInstruction, ['44430 -> b'], {
-//   operation: 'ASSIGN',
-//   input: [44430],
-//   assignee: 'b',
-// });
+test(parseInstruction, ['kg OR kf -> kh'], {
+  operationName: 'OR',
+  input: ['kg', 'kf'],
+  assignee: 'kh',
+});
+test(parseInstruction, ['44430 -> b'], {
+  operationName: 'ASSIGN',
+  input: [44430],
+  assignee: 'b',
+});
 // test(parseInstruction, ['y AND ae -> ag'], {
 //   operation: 'AND',
 //   input: ['y', 'ae'],
@@ -78,16 +95,14 @@ test(parseOperation, ['NOT dq'], {
   operationName: 'NOT',
   input: ['dq'],
 });
-// test(parseOperation, ['kg OR kf'], {
-//   operation: 'OR',
-//   input: ['kg', 'kf'],
-//   assignee: 'kh',
-// });
-// test(parseOperation, ['44430'], {
-//   operation: 'ASSIGN',
-//   input: [44430],
-//   assignee: 'b',
-// });
+test(parseOperation, ['kg OR kf'], {
+  operationName: 'OR',
+  input: ['kg', 'kf'],
+});
+test(parseOperation, ['44430'], {
+  operationName: 'ASSIGN',
+  input: [44430],
+});
 // test(parseOperation, ['y AND ae'], {
 //   operation: 'AND',
 //   input: ['y', 'ae'],
