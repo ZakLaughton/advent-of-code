@@ -23,17 +23,18 @@ function parseInstruction(instruction: string): ParsedInstruction {
 }
 
 // parses the operation part of an instruction
-function parseOperation(input: string): ParsedOperation {
-  console.log('Parsing operation:', input);
+function parseOperation(operationInput: string): ParsedOperation {
+  //   console.log('Parsing operation:', operation);
   let operation = '';
   let input = [];
   // test for NOT
-  if (input.startsWith('NOT')) {
+  if (operationInput.substring(0, 3) === 'NOT') {
     operation = 'NOT';
-    const regex = /(\w+)$/;
-    const match = input.match(regex);
+    const regex = /NOT (\w+)$/;
+    const match = operationInput.match(regex);
+    input.push(match[1]);
 
-    console.log('match>>>', match);
+    return { operation, input };
   }
 }
 
@@ -74,7 +75,6 @@ console.log('\n\n🧪 Testing parseOperation');
 test(parseOperation, ['NOT dq'], {
   operation: 'NOT',
   input: ['dq'],
-  assignee: 'dr',
 });
 // test(parseOperation, ['kg OR kf'], {
 //   operation: 'OR',
