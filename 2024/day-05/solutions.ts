@@ -1,5 +1,6 @@
 import { getTextInputFromFile } from '../../utils';
 import {
+  getFixedMiddlePageTotal,
   getValidMiddlePageTotal,
   parseRulesAndUpdatesFromInput,
 } from './logic';
@@ -18,5 +19,5 @@ export function getPart1Solution(input: string): number {
 export function getPart2Solution(input: string): number {
   const parsedInput = parseRulesAndUpdatesFromInput(input);
   const fixedMiddlePageTotal = getFixedMiddlePageTotal(parsedInput);
-  //   return fixedMiddlePageTotal;
+  return fixedMiddlePageTotal;
 }
