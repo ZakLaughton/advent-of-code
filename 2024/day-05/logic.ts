@@ -103,7 +103,7 @@ export function getFixedMiddlePageTotal(
   let count = 0;
   for (const update of updates) {
     if (!isUpdateValid(rules, update)) {
-      const fixedUpdate = fixUpdate(update);
+      const fixedUpdate = fixUpdate(rules, update);
       count += getMiddlePageNumber(fixedUpdate);
     }
   }
