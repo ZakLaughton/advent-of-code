@@ -6,7 +6,7 @@ import {
   isPageValid,
   isUpdateValid,
   parseRulesAndUpdatesFromInput,
-} from './get-solutions';
+} from './main';
 
 /** TESTS */
 const testInput = `47|53
