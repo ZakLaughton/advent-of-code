@@ -36,7 +36,9 @@ export function translateRulesToArray(input: string): Rule[] {
 }
 
 // Takes parsed input and returns the total of middle pages from valid lines
-export function getMiddlePageTotal(parsedInput: ParsedRulesAndUpdates): number {
+export function getValidMiddlePageTotal(
+  parsedInput: ParsedRulesAndUpdates
+): number {
   const { rules, updates } = parsedInput;
   let count = 0;
   for (const update of updates) {

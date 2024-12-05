@@ -1,7 +1,7 @@
 import { test } from '../../utils';
 import {
   getMiddlePageNumber,
-  getMiddlePageTotal,
+  getValidMiddlePageTotal,
   isPageValid,
   isUpdateValid,
   parseRulesAndUpdatesFromInput,
@@ -36,7 +36,7 @@ const parsedRulesOutput = {
 test(parseRulesAndUpdatesFromInput, [testInput], parsedRulesOutput);
 
 console.log('\n\n🧪 Testing getMiddlePageTotal');
-test(getMiddlePageTotal, [parsedRulesOutput], 61);
+test(getValidMiddlePageTotal, [parsedRulesOutput], 61);
 
 console.log('\n\n🧪 Testing isUpdateValid');
 test(isUpdateValid, [parsedRulesOutput.rules, [75, 47, 61, 53, 29]], true);
