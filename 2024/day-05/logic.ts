@@ -138,18 +138,42 @@ export function fixUpdate(rules: Rule[], update: Update): Update {
   // 6. index 5: exit loop
   // 7. return tempUpdate
 
-  let fixedUpdate = [...update];
+  let fixedUpdate = [...update]; // array copy to iteratively sort
   let highestTestedIndex = -1;
 
   for (let i = 0; i < fixedUpdate.length; i++) {
     while (i > highestTestedIndex) {
       const startPage = fixedUpdate[i];
       const pagesAfter = fixedUpdate.slice(i, update.length);
-      if (isPageValid({ rules, pagesAfter, startPage })) {
-        highestTestedIndex++;
+      const firstInvalidPage = getFirstInvalidFollowingPage({
+        rules,
+        startPage,
+        pagesAfter,
+      });
+      // Go to next index if valid
+      if (firstInvalidPage === null) {
+        highestTestedIndex = i;
         continue;
       }
+      // Fix an invalid index
+      fixedUpdate = moveElement(
+        fixedUpdate,
+        fixedUpdate.indexOf(firstInvalidPage),
+        i
+      );
+      continue; // Re-test in the current while loop from the current index
     }
   }
   return fixedUpdate;
+}
+
+export function moveElement(
+  array: number[],
+  fromIndex: number,
+  toIndex: number
+) {
+  const newArray = [...array];
+  const element = newArray.splice(fromIndex, 1)[0];
+  newArray.splice(toIndex, 0, element);
+  return newArray;
 }

@@ -7,6 +7,7 @@ import {
   getFirstInvalidFollowingPage,
   isUpdateValid,
   parseRulesAndUpdatesFromInput,
+  moveElement,
 } from './logic';
 import { getPart1Solution, getPart2Solution } from './solutions';
 
@@ -165,3 +166,8 @@ test(
   ],
   [75, 61, 47, 97, 53]
 );
+
+console.log('\n\n🧪 Testing moveElement');
+test(moveElement, [['a', 'b', 'c'], 2, 0], ['c', 'a', 'b']);
+test(moveElement, [['a', 'b', 'c'], 0, 2], ['b', 'c', 'a']);
+test(moveElement, [['a', 'b', 'c'], 0, 1], ['b', 'a', 'c']);
