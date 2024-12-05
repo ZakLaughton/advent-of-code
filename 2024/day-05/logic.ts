@@ -113,31 +113,6 @@ export function getFixedMiddlePageTotal(
 // Takes rules and an invalid line and returns an array with pages
 // rearranged according to the rules
 export function fixUpdate(rules: Rule[], update: Update): Update {
-  // Rules: [[47,97], [61,47]]
-  // Invalid update: [75,97,47,61,53]
-  // tempUpdate = [75,97,47,61,53] (copy to modify)
-  // let highestTestedIndex = -1
-  // for (let i = 0; i < tempUpdate.length; i++)
-  // 1. index 0 > highestTestedIndex
-  //   test 75: valid
-  //   highestTestedIndex++ (1)
-  // 2. index 1 > highestTestedIndex
-  //   test 97: invalid, violates rule [47, 97]
-  //   move 47 to the current index in tempUpdate: [75, 47, 97, 61, 53]
-  //   highestTestedIndex++ (2)
-  //   test 47: invalid, violates rule [61,47]
-  //   move 61 to the current index in tempUpdate: [75, 61, 47, 97, 53]
-  //   highestTestedIndex++ (3)
-  //   test 61: valid
-  // 3. index 2 <= highestTestedIndex
-  //   skip
-  // 4. index 3 <= highestTestedIndex
-  //   skip
-  // 5. index 4 > highestTestedIndex
-  //   53: valid
-  // 6. index 5: exit loop
-  // 7. return tempUpdate
-
   let fixedUpdate = [...update]; // array copy to iteratively sort
   let highestTestedIndex = -1;
 
