@@ -2,11 +2,11 @@ import { test } from '../../utils';
 import {
   getMiddlePageNumber,
   getMiddlePageTotal,
-  getSolution,
+  getPart1Solution,
   isPageValid,
   isUpdateValid,
   parseRulesAndUpdatesFromInput,
-} from './p1-code';
+} from './get-solutions';
 
 /** TESTS */
 const testInput = `47|53
@@ -18,7 +18,7 @@ const testInput = `47|53
 97,61,53,29,13`;
 
 console.log('\n\n🧪 Testing getSolution');
-test(getSolution, [testInput], 61);
+test(getPart1Solution, [testInput], 61);
 
 console.log('\n\n🧪 Testing parseRulesAndUpdatesFromInput');
 const parsedRulesOutput = {

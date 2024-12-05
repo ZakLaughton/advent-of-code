@@ -8,9 +8,9 @@ type ParsedRulesAndUpdates = {
 };
 
 const input = getTextInputFromFile('./input.txt');
-console.log('ANSWER>>>', getSolution(input));
+console.log('ANSWER>>>', getPart1Solution(input));
 
-export function getSolution(input: string): number {
+export function getPart1Solution(input: string): number {
   const parsedInput = parseRulesAndUpdatesFromInput(input); // Transcribes to rules and update arrays to be processed
   // parsedInput format:
   // {rules: [[47, 53], [97, 13]], updates: [[75,47,61,53,29], [97,61,53,29,13]]}
