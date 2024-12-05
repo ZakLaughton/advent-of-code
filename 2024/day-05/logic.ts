@@ -116,6 +116,9 @@ export function fixUpdate(rules: Rule[], update: Update): Update {
   let fixedUpdate = [...update]; // array copy to iteratively sort
   let highestTestedIndex = -1;
 
+  // This loop checks each index and moves invalid pages that come after
+  // to the current index. It continues to retest the current index until
+  // all pages after are valid.
   for (let i = 0; i < fixedUpdate.length; i++) {
     while (i > highestTestedIndex) {
       const startPage = fixedUpdate[i];
