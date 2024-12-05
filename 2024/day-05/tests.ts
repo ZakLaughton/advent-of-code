@@ -9,7 +9,7 @@ import {
 import { getPart1Solution } from './solutions';
 
 /** TESTS */
-const testInput = `47|53
+const part1TestInput = `47|53
 97|13
 97|61
 13|97
@@ -17,8 +17,11 @@ const testInput = `47|53
 75,47,61,53,29
 97,61,53,29,13`;
 
-console.log('\n\n🧪 Testing getSolution');
-test(getPart1Solution, [testInput], 61);
+console.log(
+  '\n\n***********************\n**** PART 1 TESTING ***\n***********************'
+);
+console.log('\n\n🧪 Testing getPart1Solution');
+test(getPart1Solution, [part1TestInput], 61);
 
 console.log('\n\n🧪 Testing parseRulesAndUpdatesFromInput');
 const parsedRulesOutput = {
@@ -33,9 +36,9 @@ const parsedRulesOutput = {
     [97, 61, 53, 29, 13],
   ],
 };
-test(parseRulesAndUpdatesFromInput, [testInput], parsedRulesOutput);
+test(parseRulesAndUpdatesFromInput, [part1TestInput], parsedRulesOutput);
 
-console.log('\n\n🧪 Testing getMiddlePageTotal');
+console.log('\n\n🧪 Testing getValidMiddlePageTotal');
 test(getValidMiddlePageTotal, [parsedRulesOutput], 61);
 
 console.log('\n\n🧪 Testing isUpdateValid');
@@ -64,3 +67,10 @@ console.log('\n\n🧪 Testing getMiddlePageNumber');
 test(getMiddlePageNumber, [[75, 47, 61, 53, 29]], 61);
 test(getMiddlePageNumber, [[97, 61, 53, 29, 13]], 53);
 test(getMiddlePageNumber, [[75, 29, 13]], 29);
+
+console.log(
+  '\n\n***********************\n**** PART 2 TESTING ***\n***********************'
+);
+
+console.log('\n\n🧪 Testing getPart1Solution');
+test(getPart1Solution, [part1TestInput], 61);
