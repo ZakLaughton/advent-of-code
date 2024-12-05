@@ -2,11 +2,11 @@ import { test } from '../../utils';
 import {
   getMiddlePageNumber,
   getMiddlePageTotal,
-  getPart1Solution,
   isPageValid,
   isUpdateValid,
   parseRulesAndUpdatesFromInput,
-} from './solutions';
+} from './logic';
+import { getPart1Solution } from './solutions';
 
 /** TESTS */
 const testInput = `47|53
