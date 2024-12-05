@@ -145,11 +145,7 @@ export function fixUpdate(rules: Rule[], update: Update): Update {
   return fixedUpdate;
 }
 
-export function moveElement(
-  array: number[],
-  fromIndex: number,
-  toIndex: number
-) {
+export function moveElement(array: any[], fromIndex: number, toIndex: number) {
   const newArray = [...array];
   const element = newArray.splice(fromIndex, 1)[0];
   newArray.splice(toIndex, 0, element);
