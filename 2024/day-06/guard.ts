@@ -11,8 +11,8 @@ import {
 // Counts number of spaces a guard visits before leaving a grid
 // The guard starts at ^, and stops before every # and turns right.
 // See README in this directory for more detail
-export function countVisitedSpaces(grid: Grid): number {
-  const visitedLocations = new Set();
+export function getVisitedLocations(grid: Grid): Coordinates[] {
+  let visitedLocations: Coordinates[] = [];
   let guardLocation = getGuardLocation(grid);
   let guardDirection: Direction = 'up';
 
@@ -33,15 +33,12 @@ export function countVisitedSpaces(grid: Grid): number {
     const visitedLocationsFromPatrol = getAllPositionsBetweenCoordinates(
       startingLocation,
       endingLocation
-    );
+    ).filter((location) => isInGrid(grid, location));
 
-    for (const location of visitedLocationsFromPatrol) {
-      if (isInGrid(grid, location)) {
-        visitedLocations.add(JSON.stringify(location));
-      }
-    }
+    visitedLocations = [...visitedLocations, ...visitedLocationsFromPatrol];
   }
-  return visitedLocations.size;
+
+  return visitedLocations;
 }
 
 // Returns the starting location of the guard as
@@ -110,4 +107,4 @@ export function turnRight(currentDirection: Direction): Direction {
 
 // Finds all locations where adding an obstruction would cause the
 // guard to never exit
-export function findLoopingObstructions(grid: Grid): Coordinates[] {}
+// export function findLoopingObstructions(grid: Grid): Coordinates[] {}
