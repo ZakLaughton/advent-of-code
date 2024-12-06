@@ -14,6 +14,8 @@ import {
 // See README in this directory for more detail
 export function getVisitedLocations(grid: Grid): Coordinates[] {
   let visitedLocations: Coordinates[] = [];
+  let stopLocations: Coordinates[] = [];
+
   let guardLocation = getGuardLocation(grid);
   let guardDirection: Direction = 'up';
 
@@ -26,6 +28,8 @@ export function getVisitedLocations(grid: Grid): Coordinates[] {
       startingLocation,
       startingDirection,
     });
+
+    if (areStopLocationsLooping(stopLocations)) break;
 
     guardLocation = endingLocation;
     guardDirection = endingDirection;
@@ -90,6 +94,17 @@ export function patrol({
     endingLocation: currentLocation,
     endingDirection: currentDirection,
   };
+}
+
+// Looks at locations a guard has stopped to see if it's in a
+// never-ending loop
+export function areStopLocationsLooping(stopLocations: Coordinates[]): boolean {
+  const lastStopLocationIndex = stopLocations.length - 1;
+
+  return (
+    JSON.stringify(stopLocations[lastStopLocationIndex]) ===
+    JSON.stringify(stopLocations[lastStopLocationIndex - 4])
+  );
 }
 
 // Returns the new direction after turning right

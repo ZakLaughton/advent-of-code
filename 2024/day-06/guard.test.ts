@@ -1,16 +1,16 @@
 import { logFunctionTestingHeader, test } from '../../utils';
+import { Grid } from './grid';
 import {
-  countVisitedSpaces,
+  areStopLocationsLooping,
   findLoopingObstructions,
   getGuardLocation,
   getVisitedLocations,
   patrol,
   turnRight,
 } from './guard';
-import { getPart1Solution } from './solutions';
 
 // Copied from https://adventofcode.com/2024/day/6
-const exampleGrid = [
+const exampleGrid: Grid = [
   `....#.....`,
   `.........#`,
   `..........`,
@@ -22,6 +22,7 @@ const exampleGrid = [
   `#.........`,
   `......#...`,
 ];
+const loopingExampleGrid: Grid = [`.#...`, `....#`, `#^...`, `...#.`];
 
 console.log(
   '\n\n***********************\n**** GUARD TESTING ***\n***********************'
@@ -85,7 +86,38 @@ const countVisitedSpacesOutput = [
   [8, 7],
   [9, 7],
 ];
+
 test(getVisitedLocations, [exampleGrid], countVisitedSpacesOutput);
+// Make sure it stops if there's a loop
+test(getVisitedLocations, [loopingExampleGrid], countVisitedSpacesOutput);
+
+logFunctionTestingHeader('areStopLocationsLooping()');
+test(
+  areStopLocationsLooping,
+  [
+    [
+      [2, 1],
+      [1, 1],
+      [1, 3],
+      [2, 3],
+      [2, 1],
+    ],
+  ],
+  true
+);
+test(
+  areStopLocationsLooping,
+  [
+    [
+      [4, 1],
+      [1, 1],
+      [1, 3],
+      [3, 3],
+      [3, 1],
+    ],
+  ],
+  false
+);
 
 logFunctionTestingHeader('getGuardLocation()');
 test(getGuardLocation, [exampleGrid], [6, 4]);
