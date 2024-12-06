@@ -1,5 +1,5 @@
 import { getTextInputFromFileInLines } from '../../utils';
-import { countVisitedSpaces } from './logic';
+import { countVisitedSpaces } from './guard';
 
 const input = getTextInputFromFileInLines;
 

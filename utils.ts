@@ -36,6 +36,10 @@ export function test<T>(
     );
   }
 }
+
+export function logFunctionTestingHeader(functionName: string): void {
+  console.log('\n\n🧪 Testing', functionName, '\n');
+}
 export function getTextInputFromFile(file: string) {
   const fs = require('fs');
   return fs.readFileSync(file).toString();
