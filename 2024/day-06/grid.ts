@@ -89,3 +89,37 @@ export function getAllPositionsBetweenCoordinates(
 
   return positionsVisited;
 }
+
+// Returns a new grid with an obstruction placed at the location
+export function placeObstructionOnGrid(
+  grid: Grid,
+  coordinates: Coordinates
+): Grid {
+  let newGrid = [...grid];
+
+  const obstructionRow = coordinates[0];
+  const obstructionColumn = coordinates[1];
+
+  newGrid[obstructionRow] = replaceCharacterAtIndex({
+    str: newGrid[obstructionRow],
+    index: obstructionColumn,
+    replacementCharacter: '#',
+  });
+
+  return newGrid;
+}
+
+interface ReplaceCharacterAtIndexInput {
+  str: string;
+  index: number;
+  replacementCharacter: string;
+}
+export function replaceCharacterAtIndex({
+  str,
+  index,
+  replacementCharacter,
+}: ReplaceCharacterAtIndexInput): string {
+  const strArray = str.split('');
+  strArray[index] = replacementCharacter;
+  return strArray.join('');
+}

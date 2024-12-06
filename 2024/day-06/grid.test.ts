@@ -4,6 +4,8 @@ import {
   getNextLocation,
   Grid,
   isInGrid,
+  placeObstructionOnGrid,
+  replaceCharacterAtIndex,
 } from './grid';
 
 const exampleGrid: Grid = [
@@ -115,4 +117,30 @@ test(
     [0, 6],
     [0, 7],
   ]
+);
+
+logFunctionTestingHeader('placeObstructionOnGrid()');
+const exampleGridWithAddedObstruction = [
+  `....#.....`,
+  `.........#`,
+  `....#.....`,
+  `..#.......`,
+  `.......#..`,
+  `..........`,
+  `.#..^.....`,
+  `........#.`,
+  `#.........`,
+  `......#...`,
+];
+test(
+  placeObstructionOnGrid,
+  [exampleGrid, [2, 4]],
+  exampleGridWithAddedObstruction
+);
+
+logFunctionTestingHeader('replaceCharacterAtIndex()');
+test(
+  replaceCharacterAtIndex,
+  [{ str: `......#...`, index: 2, replacementCharacter: '#' }],
+  `..#...#...`
 );

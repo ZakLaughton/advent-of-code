@@ -6,6 +6,7 @@ import {
   Grid,
   isInGrid,
   LocationType,
+  placeObstructionOnGrid,
 } from './grid';
 
 // Counts number of spaces a guard visits before leaving a grid
@@ -107,4 +108,17 @@ export function turnRight(currentDirection: Direction): Direction {
 
 // Finds all locations where adding an obstruction would cause the
 // guard to never exit
-// export function findLoopingObstructions(grid: Grid): Coordinates[] {}
+export function findLoopingObstructions(
+  grid: Grid,
+  visitedLocationsOnClearPath: Coordinates[]
+): Coordinates[] {
+  const obstructionLocationPossibilities = visitedLocationsOnClearPath.slice(1);
+
+  let loopingObstructionLocations: Coordinate[] = [];
+  for (const locationCandidate of obstructionLocationPossibilities) {
+    const obstructedGrid = placeObstructionOnGrid(grid, locationCandidate);
+    // Run the guard through, adding a stop condition if location is the same as 4 moves earlier
+    // check if the last visited location is the same as the one 4 before
+    // if so, push coordinate to location
+  }
+}
