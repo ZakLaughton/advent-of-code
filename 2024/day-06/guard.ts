@@ -13,10 +13,10 @@ import {
 // The guard starts at ^, and stops before every # and turns right.
 // See README in this directory for more detail
 export function getVisitedLocations(grid: Grid): Coordinates[] {
-  let visitedLocations: Coordinates[] = [];
   let stopLocations: Coordinates[] = [];
 
   let guardLocation = getGuardLocation(grid);
+  let visitedLocations: Coordinates[] = [guardLocation];
   let guardDirection: Direction = 'up';
 
   while (isInGrid(grid, guardLocation)) {
@@ -28,8 +28,7 @@ export function getVisitedLocations(grid: Grid): Coordinates[] {
       startingLocation,
       startingDirection,
     });
-
-    if (areStopLocationsLooping(stopLocations)) break;
+    stopLocations.push(endingLocation);
 
     guardLocation = endingLocation;
     guardDirection = endingDirection;
@@ -41,6 +40,8 @@ export function getVisitedLocations(grid: Grid): Coordinates[] {
     ).filter((location) => isInGrid(grid, location));
 
     visitedLocations = [...visitedLocations, ...visitedLocationsFromPatrol];
+
+    if (areStopLocationsLooping(stopLocations)) break;
   }
 
   return visitedLocations;

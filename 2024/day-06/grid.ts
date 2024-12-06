@@ -59,12 +59,13 @@ export function getNextLocation({
   };
 }
 
-// Returns all spaces travelled between two points,
-// inclusive of the start and end
+// Returns all spaces traveled between two points,
+// inclusive of the end, but not the start
 export function getAllPositionsBetweenCoordinates(
   start: Coordinates,
   end: Coordinates
 ): Coordinates[] {
+  // TODO: Lots of redundancy in this function. Can be cleaned up
   const positionsVisited: Coordinates[] = [];
   // process row movement
   if (start[0] !== end[0]) {
@@ -74,6 +75,10 @@ export function getAllPositionsBetweenCoordinates(
 
     for (let i = minRow; i <= maxRow; i++) {
       positionsVisited.push([i, column]);
+    }
+
+    if (end[0] < start[0]) {
+      positionsVisited.reverse();
     }
   }
 
@@ -85,9 +90,12 @@ export function getAllPositionsBetweenCoordinates(
     for (let i = minColumn; i <= maxColumn; i++) {
       positionsVisited.push([row, i]);
     }
+    if (end[1] < start[1]) {
+      positionsVisited.reverse();
+    }
   }
 
-  return positionsVisited;
+  return positionsVisited.slice(1);
 }
 
 // Returns a new grid with an obstruction placed at the location
