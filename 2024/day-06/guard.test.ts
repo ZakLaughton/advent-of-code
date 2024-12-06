@@ -1,5 +1,5 @@
 import { logFunctionTestingHeader, test } from '../../utils';
-import { getGuardLocation, patrol } from './guard';
+import { getGuardLocation, patrol, turnRight } from './guard';
 import { getPart1Solution } from './solutions';
 
 // Copied from https://adventofcode.com/2024/day/6
@@ -68,3 +68,9 @@ test(
     endingDirection: 'up',
   }
 );
+
+logFunctionTestingHeader('turnRight()');
+test(turnRight, ['up'], 'right');
+test(turnRight, ['right'], 'down');
+test(turnRight, ['down'], 'left');
+test(turnRight, ['left'], 'up');

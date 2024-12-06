@@ -66,12 +66,30 @@ export function patrol({
     locationType: nextLocationType,
   } = getNextLocation({ grid, currentLocation, currentDirection });
 
-  while (isInGrid(grid, currentLocation) && nextLocationType !== '#')
-    // while next space is not an obstacle && current space is in the grid
-    // move in direction
+  //   while (isInGrid(grid, currentLocation) && nextLocationType !== '#') {
+  //     currentLocation = nextLocationCoordinates;
+  //   }
 
-    return {
-      endingDirection: currentDirection,
-      endingLocation: currentLocation,
-    };
+  if (nextLocationType === '#') {
+    currentDirection = turnRight(currentDirection);
+  }
+
+  return {
+    endingDirection: currentDirection,
+    endingLocation: currentLocation,
+  };
+}
+
+// Returns the new direction after turning right
+export function turnRight(currentDirection: Direction): Direction {
+  switch (currentDirection) {
+    case 'up':
+      return 'right';
+    case 'right':
+      return 'down';
+    case 'down':
+      return 'left';
+    case 'left':
+      return 'up';
+  }
 }
