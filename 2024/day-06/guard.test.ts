@@ -1,6 +1,7 @@
 import { logFunctionTestingHeader, test } from '../../utils';
 import {
   countVisitedSpaces,
+  findLoopingObstructions,
   getGuardLocation,
   patrol,
   turnRight,
@@ -82,3 +83,17 @@ test(turnRight, ['up'], 'right');
 test(turnRight, ['right'], 'down');
 test(turnRight, ['down'], 'left');
 test(turnRight, ['left'], 'up');
+
+logFunctionTestingHeader('findLoopingObstructions()');
+test(
+  findLoopingObstructions,
+  [exampleGrid],
+  [
+    [6, 3],
+    [7, 6],
+    [7, 7],
+    [8, 1],
+    [8, 3],
+    [9, 7],
+  ]
+);

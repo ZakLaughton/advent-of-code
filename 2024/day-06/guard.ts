@@ -107,3 +107,7 @@ export function turnRight(currentDirection: Direction): Direction {
       return 'up';
   }
 }
+
+// Finds all locations where adding an obstruction would cause the
+// guard to never exit
+export function findLoopingObstructions(grid: Grid): Coordinates[] {}
