@@ -1,5 +1,5 @@
-import { test } from '../../utils';
-import { countLength } from './logic';
+import { getTextInputFromFileInLines, test } from '../../utils';
+import { countLength, countParsedLength } from './logic';
 import { getPart1Solution } from './solutions';
 
 console.log(
@@ -18,14 +18,15 @@ const part1TestInput = [
 console.log('\n\n🧪 Testing getPart1Solution');
 test(getPart1Solution, part1TestInput, 12);
 
-console.log('\n\n🧪 Testing countLength literals');
+console.log('\n\n🧪 Testing countLength');
 test(countLength, [String.raw`""`], 2);
 test(countLength, [String.raw`"abc"`], 5);
 test(countLength, [String.raw`"aaa\"aaa"`], 10);
 test(countLength, [String.raw`"\x27"`], 6);
 
-console.log('\n\n🧪 Testing countLength inMemory');
-test(countLength, [``], 0);
-test(countLength, [`abc`], 3);
-test(countLength, [`aaa\"aaa`], 7);
-test(countLength, [`\xe4`], 1);
+console.log('\n\n🧪 Testing countParsedLength');
+const testInput = getTextInputFromFileInLines('./test-input.txt');
+test(countParsedLength, [testInput[0]], 0);
+test(countParsedLength, [testInput[1]], 3);
+test(countParsedLength, [testInput[2]], 7);
+test(countParsedLength, [testInput[3]], 1);
