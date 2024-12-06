@@ -1,6 +1,7 @@
 import {
   Coordinates,
   Direction,
+  getAllPositionsBetweenCoordinates,
   getNextLocation,
   Grid,
   isInGrid,
@@ -11,26 +12,36 @@ import {
 // The guard starts at ^, and stops before every # and turns right.
 // See README in this directory for more detail
 export function countVisitedSpaces(grid: Grid): number {
-  const visitedSpaces = new Set();
+  const visitedLocations = new Set();
   let guardLocation = getGuardLocation(grid);
   let guardDirection: Direction = 'up';
 
   while (isInGrid(grid, guardLocation)) {
+    // Move guard
     const startingLocation = guardLocation;
     const startingDirection = guardDirection;
-    const { endingLocation, endingDirection, visitedSpaces } = patrol({
+    const { endingLocation, endingDirection } = patrol({
       grid,
       startingLocation,
       startingDirection,
     });
 
-    const visitedSpaces = getAllPositionsBetweenCoordinates(
+    guardLocation = endingLocation;
+    guardDirection = endingDirection;
+
+    // Log visited locations
+    const visitedLocationsFromPatrol = getAllPositionsBetweenCoordinates(
       startingLocation,
       endingLocation
     );
-    //   update spaces visited
-    //   add spaces visited in this straight path to the set
+
+    for (const location of visitedLocationsFromPatrol) {
+      if (isInGrid(grid, location)) {
+        visitedLocations.add(JSON.stringify(location));
+      }
+    }
   }
+  return visitedLocations.size;
 }
 
 // Returns the starting location of the guard as

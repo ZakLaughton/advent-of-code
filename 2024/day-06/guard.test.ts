@@ -1,5 +1,10 @@
 import { logFunctionTestingHeader, test } from '../../utils';
-import { getGuardLocation, patrol, turnRight } from './guard';
+import {
+  countVisitedSpaces,
+  getGuardLocation,
+  patrol,
+  turnRight,
+} from './guard';
 import { getPart1Solution } from './solutions';
 
 // Copied from https://adventofcode.com/2024/day/6
@@ -19,13 +24,16 @@ const exampleGrid = [
 console.log(
   '\n\n***********************\n**** GUARD TESTING ***\n***********************'
 );
-logFunctionTestingHeader('getPart1Solution');
+logFunctionTestingHeader('getPart1Solution()');
 // test(getPart1Solution, [exampleGrid], 41);
 
-logFunctionTestingHeader('getGuardLocation');
+logFunctionTestingHeader('countVisitedSpaces()');
+test(countVisitedSpaces, [exampleGrid], 41);
+
+logFunctionTestingHeader('getGuardLocation()');
 test(getGuardLocation, [exampleGrid], [6, 4]);
 
-logFunctionTestingHeader('patrol');
+logFunctionTestingHeader('patrol()');
 // Test 4 directions
 test(
   patrol,
