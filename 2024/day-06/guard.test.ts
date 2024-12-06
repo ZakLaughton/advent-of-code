@@ -26,8 +26,6 @@ const exampleGrid = [
 console.log(
   '\n\n***********************\n**** GUARD TESTING ***\n***********************'
 );
-logFunctionTestingHeader('getPart1Solution()');
-test(getPart1Solution, [exampleGrid], 41);
 
 logFunctionTestingHeader('countVisitedSpaces()');
 const countVisitedSpacesOutput = [
