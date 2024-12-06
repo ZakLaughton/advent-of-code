@@ -65,7 +65,7 @@ test(
   [{ grid: exampleGrid, startingLocation: [7, 7], startingDirection: 'down' }],
   {
     endingLocation: [10, 7],
-    endingDirection: 'up',
+    endingDirection: 'down',
   }
 );
 

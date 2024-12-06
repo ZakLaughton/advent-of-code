@@ -11,7 +11,11 @@ export function isInGrid(grid: Grid, coordinates: Coordinates): boolean {
   const maxRowIndex = rowCount - 1;
   const maxColumnIndex = columnCount - 1;
 
-  return coordinates[0] <= maxRowIndex && coordinates[1] <= maxColumnIndex;
+  const areCoordinatesPositive = coordinates[0] >= 0 && coordinates[1] >= 0;
+  const areCoordinatesWithinGridUpperBounds =
+    coordinates[0] <= maxRowIndex && coordinates[1] <= maxColumnIndex;
+
+  return areCoordinatesPositive && areCoordinatesWithinGridUpperBounds;
 }
 
 interface GetNextLocationInput {
@@ -26,8 +30,9 @@ export function getNextLocation({
   currentDirection,
 }: GetNextLocationInput): {
   coordinates: Coordinates;
-  locationType: '.' | '^' | '#' | '';
+  type: '.' | '^' | '#' | '';
 } {
+  //   console.log('getting next location for', currentLocation, currentDirection);
   // Amount to change coordinates for moving in any direction
   const directionDelta: Record<Direction, Coordinates> = {
     up: [-1, 0],
@@ -36,17 +41,51 @@ export function getNextLocation({
     down: [1, 0],
   };
 
-  const nextRowIndex = (currentLocation[0] +=
-    directionDelta[currentDirection][0]);
-  const nextColumnIndex = (currentLocation[1] +=
-    directionDelta[currentDirection][1]);
-  const nextCoordinates: Coordinates = [nextRowIndex, nextColumnIndex];
-  const locationType = (isInGrid(grid, nextCoordinates)
-    ? grid[nextRowIndex][nextColumnIndex]
-    : '') as LocationType;
+  const nextCoordinates: Coordinates = [
+    currentLocation[0] + directionDelta[currentDirection][0],
+    currentLocation[1] + directionDelta[currentDirection][1],
+  ];
 
+  const locationType = (isInGrid(grid, nextCoordinates)
+    ? grid[nextCoordinates[0]][nextCoordinates[1]]
+    : '') as LocationType;
+  //   console.log('next location is:', {
+  //     coordinates: [nextCoordinates[0], nextCoordinates[1]],
+  //     locationType,
+  //   });
   return {
-    coordinates: [nextRowIndex, nextColumnIndex],
-    locationType,
+    coordinates: [nextCoordinates[0], nextCoordinates[1]],
+    type: locationType,
   };
+}
+
+// Returns all spaces travelled between two points,
+// inclusive of the start and end
+export function getAllPositionsBetweenCoordinates(
+  start: Coordinates,
+  end: Coordinates
+): Coordinates[] {
+  const positionsVisited: Coordinates[] = [];
+  // process row movement
+  if (start[0] !== end[0]) {
+    const column = start[1];
+    const minRow = Math.min(start[0], end[0]);
+    const maxRow = Math.max(start[0], end[0]);
+
+    for (let i = minRow; i <= maxRow; i++) {
+      positionsVisited.push([i, column]);
+    }
+  }
+
+  if (start[1] !== end[1]) {
+    const row = start[0];
+    const minColumn = Math.min(start[1], end[1]);
+    const maxColumn = Math.max(start[1], end[1]);
+
+    for (let i = minColumn; i <= maxColumn; i++) {
+      positionsVisited.push([row, i]);
+    }
+  }
+
+  return positionsVisited;
 }

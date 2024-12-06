@@ -4,6 +4,7 @@ import {
   getNextLocation,
   Grid,
   isInGrid,
+  LocationType,
 } from './grid';
 
 // Counts number of spaces a guard visits before leaving a grid
@@ -22,8 +23,11 @@ export function countVisitedSpaces(grid: Grid): number {
       startingLocation,
       startingDirection,
     });
-    //   move guard until obstacle or out of bounds
-    //   rotate guard
+
+    const visitedSpaces = getAllPositionsBetweenCoordinates(
+      startingLocation,
+      endingLocation
+    );
     //   update spaces visited
     //   add spaces visited in this straight path to the set
   }
@@ -57,26 +61,25 @@ export function patrol({
   endingLocation: Coordinates;
   endingDirection: Direction;
 } {
-  const visitedSpaces: Coordinates[] = [];
   let currentLocation = startingLocation;
   let currentDirection = startingDirection;
-
-  const {
-    coordinates: nextLocationCoordinates,
-    locationType: nextLocationType,
+  let nextLocation: {
+    coordinates: Coordinates;
+    type: LocationType;
   } = getNextLocation({ grid, currentLocation, currentDirection });
 
-  //   while (isInGrid(grid, currentLocation) && nextLocationType !== '#') {
-  //     currentLocation = nextLocationCoordinates;
-  //   }
+  while (isInGrid(grid, currentLocation) && nextLocation.type !== '#') {
+    currentLocation = nextLocation.coordinates;
+    nextLocation = getNextLocation({ grid, currentLocation, currentDirection });
 
-  if (nextLocationType === '#') {
-    currentDirection = turnRight(currentDirection);
+    if (nextLocation.type === '#') {
+      currentDirection = turnRight(currentDirection);
+    }
   }
 
   return {
-    endingDirection: currentDirection,
     endingLocation: currentLocation,
+    endingDirection: currentDirection,
   };
 }
 
