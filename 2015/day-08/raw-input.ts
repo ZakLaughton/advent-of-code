@@ -1,4 +1,4 @@
-export const input = [
+export const rawInput = [
   String.raw`"qxfcsmh"`,
   String.raw`"ffsfyxbyuhqkpwatkjgudo"`,
   String.raw`"byc\x9dyxuafof\\\xa6uf\\axfozomj\\olh\x6a"`,
