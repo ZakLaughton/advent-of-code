@@ -2,10 +2,11 @@ import { logFunctionTestingHeader, test } from '../../utils';
 import {
   getAllPositionsBetweenCoordinates,
   getNextLocation,
+  Grid,
   isInGrid,
 } from './grid';
 
-const exampleGrid = [
+const exampleGrid: Grid = [
   `....#.....`,
   `.........#`,
   `..........`,

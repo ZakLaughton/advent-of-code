@@ -25,7 +25,7 @@ console.log(
   '\n\n***********************\n**** GUARD TESTING ***\n***********************'
 );
 logFunctionTestingHeader('getPart1Solution()');
-// test(getPart1Solution, [exampleGrid], 41);
+test(getPart1Solution, [exampleGrid], 41);
 
 logFunctionTestingHeader('countVisitedSpaces()');
 test(countVisitedSpaces, [exampleGrid], 41);
