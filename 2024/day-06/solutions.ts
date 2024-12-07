@@ -13,7 +13,7 @@ export function getPart1Solution(grid: Grid): number {
   for (const location of visitedLocations) {
     uniqueVisitedLocations.add(JSON.stringify(location));
   }
-  return uniqueVisitedLocations.size;
+  return uniqueVisitedLocations.size - 1;
 }
 
 export function getPart2Solution(grid: Grid): number {
