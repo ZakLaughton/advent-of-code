@@ -17,3 +17,14 @@ export function parsePaths(listOfPaths: string[]): ParsedPath[] {
   }
   return result;
 }
+
+export function getAllLocations(parsedPaths: ParsedPath[]): string[] {
+  const locations: string[] = [];
+
+  for (const path of parsedPaths) {
+    if (!locations.includes(path.start)) locations.push(path.start);
+    if (!locations.includes(path.end)) locations.push(path.end);
+  }
+
+  return locations;
+}

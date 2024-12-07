@@ -3,7 +3,7 @@ import {
   logFunctionTestingHeader,
   test,
 } from '../../utils';
-import { parsePaths } from './logic';
+import { getAllLocations, parsePaths } from './logic';
 import { getPart1Solution } from './solutions';
 
 // Copied from https://adventofcode.com/2015/day/9
@@ -21,4 +21,17 @@ test(
     { start: 'London', end: 'Belfast', distance: 518 },
     { start: 'Dublin', end: 'Belfast', distance: 141 },
   ]
+);
+
+logFunctionTestingHeader('getAllLocations()');
+test(
+  getAllLocations,
+  [
+    [
+      { start: 'London', end: 'Dublin', distance: 464 },
+      { start: 'London', end: 'Belfast', distance: 518 },
+      { start: 'Dublin', end: 'Belfast', distance: 141 },
+    ],
+  ],
+  ['London', 'Dublin', 'Belfast']
 );
