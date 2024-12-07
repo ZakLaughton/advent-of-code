@@ -1,3 +1,6 @@
+// NOTE FOR WHEN YOU COME BACK. Currently you tests are failing because of the way you pass the last location
+// There's currently not a reliable way to know if the the locations ended due to looping or due to leaving
+
 import {
   Coordinates,
   Direction,
@@ -9,11 +12,16 @@ import {
   placeObstructionOnGrid,
 } from './grid';
 
+interface StopLocation {
+  coordinates: Coordinates;
+  direction: Direction;
+}
+
 // Counts number of spaces a guard visits before leaving a grid
 // The guard starts at ^, and stops before every # and turns right.
 // See README in this directory for more detail
 export function getVisitedLocations(grid: Grid): Coordinates[] {
-  let stopLocations: Coordinates[] = [];
+  let stopLocations: StopLocation[] = [];
 
   let guardLocation = getGuardLocation(grid);
   let visitedLocations: Coordinates[] = [guardLocation];
@@ -21,14 +29,30 @@ export function getVisitedLocations(grid: Grid): Coordinates[] {
 
   while (isInGrid(grid, guardLocation)) {
     // Move guard
+
     const startingLocation = guardLocation;
     const startingDirection = guardDirection;
+    // console.log(
+    //   'Moving guard, starting at:',
+    //   startingLocation,
+    //   startingDirection
+    // );
     const { endingLocation, endingDirection } = patrol({
       grid,
       startingLocation,
       startingDirection,
     });
-    stopLocations.push(endingLocation);
+    if (endingLocation === undefined) {
+      console.log(
+        'Undefined ending location after starting at:',
+        startingLocation,
+        startingDirection
+      );
+    }
+    stopLocations.push({
+      coordinates: endingLocation,
+      direction: endingDirection,
+    });
 
     guardLocation = endingLocation;
     guardDirection = endingDirection;
@@ -37,7 +61,7 @@ export function getVisitedLocations(grid: Grid): Coordinates[] {
     const visitedLocationsFromPatrol = getAllPositionsBetweenCoordinates(
       startingLocation,
       endingLocation
-    ).filter((location) => isInGrid(grid, location));
+    );
 
     visitedLocations = [...visitedLocations, ...visitedLocationsFromPatrol];
 
@@ -85,12 +109,11 @@ export function patrol({
   while (isInGrid(grid, currentLocation) && nextLocation.type !== '#') {
     currentLocation = nextLocation.coordinates;
     nextLocation = getNextLocation({ grid, currentLocation, currentDirection });
-
-    if (nextLocation.type === '#') {
-      currentDirection = turnRight(currentDirection);
-    }
   }
 
+  if (nextLocation.type === '#') {
+    currentDirection = turnRight(currentDirection);
+  }
   return {
     endingLocation: currentLocation,
     endingDirection: currentDirection,
@@ -99,13 +122,37 @@ export function patrol({
 
 // Looks at locations a guard has stopped to see if it's in a
 // never-ending loop
-export function areStopLocationsLooping(stopLocations: Coordinates[]): boolean {
-  const lastStopLocationIndex = stopLocations.length - 1;
+export function areStopLocationsLooping(
+  stopLocations: StopLocation[]
+): boolean {
+  if (stopLocations.length < 5) {
+    return false;
+  }
+  const lastStopLocation = stopLocations[stopLocations.length - 1];
+  const previousStopLocations = stopLocations.slice(0, -1);
 
-  return (
-    JSON.stringify(stopLocations[lastStopLocationIndex]) ===
-    JSON.stringify(stopLocations[lastStopLocationIndex - 4])
-  );
+  if (
+    previousStopLocations.some((stopLocation) =>
+      areStopLocationsEquivalent(stopLocation, lastStopLocation)
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function areStopLocationsEquivalent(
+  stopLocationA: StopLocation,
+  stopLocationB: StopLocation
+): boolean {
+  if (
+    stopLocationA.coordinates[0] === stopLocationB.coordinates[0] &&
+    stopLocationA.coordinates[1] === stopLocationB.coordinates[1] &&
+    stopLocationA.direction === stopLocationB.direction
+  ) {
+    return true;
+  }
+  return false;
 }
 
 // Returns the new direction after turning right
@@ -128,13 +175,39 @@ export function findLoopingObstructions(
   grid: Grid,
   visitedLocationsOnClearPath: Coordinates[]
 ): Coordinates[] {
-  const obstructionLocationPossibilities = visitedLocationsOnClearPath.slice(1);
+  const obstructionLocationPossibilities = visitedLocationsOnClearPath
+    .slice(1)
+    .filter((location) => isInGrid(grid, location)); // Remove starting position
+  let loopingObstructionLocations: Coordinates[] = [];
 
-  let loopingObstructionLocations: Coordinate[] = [];
+  // TODO: FInd a better way to remove duplicates from the array before looping through
+  let testedLocationCandidates: Coordinates[] = [];
   for (const locationCandidate of obstructionLocationPossibilities) {
+    // console.log('Trying location candidate:', locationCandidate);
+
+    if (
+      testedLocationCandidates.some(
+        (testedLocationCandidate) =>
+          JSON.stringify(testedLocationCandidate) ===
+          JSON.stringify(locationCandidate)
+      )
+    ) {
+      continue;
+    }
     const obstructedGrid = placeObstructionOnGrid(grid, locationCandidate);
-    // Run the guard through, adding a stop condition if location is the same as 4 moves earlier
-    // check if the last visited location is the same as the one 4 before
-    // if so, push coordinate to location
+    const visitedLocations = getVisitedLocations(obstructedGrid);
+    // console.log('🚀 ~ visitedLocations:', visitedLocations);
+
+    const lastLocation = visitedLocations[visitedLocations.length - 1];
+    // console.log('🚀 ~ lastLocation:', lastLocation);
+
+    // Did the guard get stuck in a loop?
+    if (isInGrid(obstructedGrid, lastLocation)) {
+      //   console.log('!! PUSHING TO LOOPINGOBSTRUCTIONLOCATIONS');
+      loopingObstructionLocations.push(locationCandidate);
+    }
+    testedLocationCandidates.push(locationCandidate);
   }
+
+  return loopingObstructionLocations;
 }

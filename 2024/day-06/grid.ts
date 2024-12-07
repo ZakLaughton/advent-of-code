@@ -108,6 +108,13 @@ export function placeObstructionOnGrid(
   const obstructionRow = coordinates[0];
   const obstructionColumn = coordinates[1];
 
+  //   console.log(
+  //     'Creating new grid. row:',
+  //     obstructionRow,
+  //     'column:',
+  //     obstructionColumn
+  //   );
+  //   console.log('row string:', newGrid[obstructionRow]);
   newGrid[obstructionRow] = replaceCharacterAtIndex({
     str: newGrid[obstructionRow],
     index: obstructionColumn,
@@ -130,4 +137,13 @@ export function replaceCharacterAtIndex({
   const strArray = str.split('');
   strArray[index] = replacementCharacter;
   return strArray.join('');
+}
+
+export function areCoordinatesEquivalent(
+  coordinatesA: Coordinates,
+  coordinatesB: Coordinates
+): boolean {
+  return (
+    coordinatesA[0] === coordinatesB[0] && coordinatesA[1] === coordinatesB[1]
+  );
 }
