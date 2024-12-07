@@ -98,3 +98,54 @@ function traverseGraphForMinimumDistance(
 
   return shortestPath;
 }
+
+// Finds shortest path to visit all locations
+// Starting and ending at any location
+export function findLongestPathToAllLocations(graph: Graph): number {
+  let longestDistance = -Infinity;
+
+  for (const [location] of graph) {
+    const seen = new Set<string>([location]);
+    const maximumDistance = traverseGraphForMaximumDistance(
+      graph,
+      location,
+      seen,
+      0
+    );
+    longestDistance = Math.max(longestDistance, maximumDistance);
+  }
+  return longestDistance;
+}
+
+function traverseGraphForMaximumDistance(
+  graph: Graph,
+  currentLocation: string,
+  seen: Set<string>,
+  currentDistance: number
+): number {
+  // Base case: If all locations have been visited
+  if (seen.size === graph.size) {
+    return currentDistance;
+  }
+
+  let longestPath = -Infinity;
+
+  // Explore all neighbors
+  for (const { neighbor, distance } of graph.get(currentLocation) || []) {
+    if (!seen.has(neighbor)) {
+      seen.add(neighbor);
+      longestPath = Math.max(
+        longestPath,
+        traverseGraphForMaximumDistance(
+          graph,
+          neighbor,
+          seen,
+          currentDistance + distance
+        )
+      );
+      seen.delete(neighbor); // Backtrack
+    }
+  }
+
+  return longestPath;
+}

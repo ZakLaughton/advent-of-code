@@ -1,4 +1,3 @@
-import { log } from 'console';
 import {
   getTextInputFromFileInLines,
   logFunctionTestingHeader,
@@ -6,10 +5,11 @@ import {
 } from '../../utils';
 import {
   buildLocationGraph,
+  findLongestPathToAllLocations,
   findShortestPathToAllLocations,
   parsePaths,
 } from './logic';
-import { getPart1Solution } from './solutions';
+import { getPart1Solution, getPart2Solution } from './solutions';
 
 // Copied from https://adventofcode.com/2015/day/9
 const exampleInput = getTextInputFromFileInLines('./exampleInput.txt');
@@ -64,5 +64,11 @@ test(
   exampleGraph
 );
 
-logFunctionTestingHeader('findShortestPathToAllLocations');
+logFunctionTestingHeader('findShortestPathToAllLocations()');
 test(findShortestPathToAllLocations, [exampleGraph], 605);
+
+logFunctionTestingHeader('getPart2Solution()');
+test(getPart2Solution, [exampleInput], 982);
+
+logFunctionTestingHeader('findLongestPathToAllLocations()');
+test(findLongestPathToAllLocations, [exampleGraph], 982);
