@@ -1,5 +1,3 @@
-import { start } from 'repl';
-
 type ParsedPath = {
   start: string;
   end: string;
@@ -66,37 +64,37 @@ export function findShortestPathToAllLocations(graph: Graph): number {
     shortestDistance = Math.min(shortestDistance, minimumDistance);
   }
   return shortestDistance;
+}
 
-  function traverseGraphForMinimumDistance(
-    graph: Graph,
-    currentLocation: string,
-    seen: Set<string>,
-    currentDistance: number
-  ): number {
-    // Base case: If all locations have been visited
-    if (seen.size === graph.size) {
-      return currentDistance;
-    }
-
-    let shortestPath = Infinity;
-
-    // Explore all neighbors
-    for (const { neighbor, distance } of graph.get(currentLocation) || []) {
-      if (!seen.has(neighbor)) {
-        seen.add(neighbor);
-        shortestPath = Math.min(
-          shortestPath,
-          traverseGraphForMinimumDistance(
-            graph,
-            neighbor,
-            seen,
-            currentDistance + distance
-          )
-        );
-        seen.delete(neighbor); // Backtrack
-      }
-    }
-
-    return shortestPath;
+function traverseGraphForMinimumDistance(
+  graph: Graph,
+  currentLocation: string,
+  seen: Set<string>,
+  currentDistance: number
+): number {
+  // Base case: If all locations have been visited
+  if (seen.size === graph.size) {
+    return currentDistance;
   }
+
+  let shortestPath = Infinity;
+
+  // Explore all neighbors
+  for (const { neighbor, distance } of graph.get(currentLocation) || []) {
+    if (!seen.has(neighbor)) {
+      seen.add(neighbor);
+      shortestPath = Math.min(
+        shortestPath,
+        traverseGraphForMinimumDistance(
+          graph,
+          neighbor,
+          seen,
+          currentDistance + distance
+        )
+      );
+      seen.delete(neighbor); // Backtrack
+    }
+  }
+
+  return shortestPath;
 }
