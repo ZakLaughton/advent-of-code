@@ -1,10 +1,23 @@
-// import { getTextInputFromFile } from '../../utils';
+import { getTextInputFromFileInLines } from '../../utils';
+// import { getTotalOfEquationsThatMatch, parseInput } from './logic';
 
-// const input = getTextInputFromFile('./input.txt');
+// const input = getTextInputFromFileInLines('./input.txt');
 
-// console.log('Part 1 Solution>>>', getPart1Solution(input));
-// console.log('Part 2 Solution>>>', getPart2Solution(input));
+export function getPart1Solution(input: string[]): number {
+  return 0;
+}
 
-// export function getPart1Solution(input: string): number {}
-
-// export function getPart2Solution(input: string): number {}
+/**
+ * Parses the input lines into structured data.
+ */
+export function parseInput(
+  input: string[]
+): { target: number; operands: number[] }[] {
+  return input.map((line) => {
+    const [target, rest] = line.split(': ');
+    return {
+      target: Number(target),
+      operands: rest.split(' ').map(Number),
+    };
+  });
+}
