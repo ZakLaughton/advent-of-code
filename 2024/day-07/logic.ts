@@ -1,4 +1,4 @@
-type ParsedEquation = { result: number; operands: number[] };
+export type ParsedEquation = { result: number; operands: number[] };
 
 export function parseInput(input: string[]): ParsedEquation[] {
   const parsedEquations: ParsedEquation[] = [];
@@ -32,7 +32,8 @@ export function isValidEquation({
   operands,
   result: target,
 }: ParsedEquation): boolean {
-  const operators = ['+', '*'];
+  // Remove '||' from this list for part 1 answer
+  const operators = ['+', '*', '||'];
   return dfs(0, operands[0]);
 
   // Does a dept-first search to evaluate all possible outcomes
@@ -57,6 +58,11 @@ export function isValidEquation({
       if (operator === '*') {
         // console.log('multiplying it...');
         nextValue = currentValue * operands[index + 1];
+      }
+      if (operator === '||') {
+        nextValue = Number(
+          currentValue.toString() + operands[index + 1].toString()
+        );
       }
 
       if (dfs(index + 1, nextValue)) {
