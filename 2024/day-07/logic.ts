@@ -14,3 +14,56 @@ export function parseInput(input: string[]): ParsedEquation[] {
   }
   return parsedEquations;
 }
+
+// Gets the total of the result of all equations that can be
+// calculated from the given operands
+export function addAllValidEquations(equations: ParsedEquation[]): number {
+  let total = 0;
+  for (const equation of equations) {
+    if (isValidEquation(equation)) {
+      total += equation.result;
+    }
+  }
+
+  return total;
+}
+
+export function isValidEquation({
+  operands,
+  result: target,
+}: ParsedEquation): boolean {
+  const operators = ['+', '*'];
+  return dfs(0, operands[0]);
+
+  // Does a dept-first search to evaluate all possible outcomes
+  function dfs(index: number, currentValue: number): boolean {
+    // console.log('running dfs for index, currentValue:', index, currentValue);
+    if (index === operands.length - 1) {
+      //   console.log(
+      //     'End of operands, current value is',
+      //     currentValue,
+      //     'Target:',
+      //     target
+      //   );
+      return currentValue === target;
+    }
+
+    for (const operator of operators) {
+      let nextValue = 0;
+      if (operator === '+') {
+        // console.log('adding it...');
+        nextValue = currentValue + operands[index + 1];
+      }
+      if (operator === '*') {
+        // console.log('multiplying it...');
+        nextValue = currentValue * operands[index + 1];
+      }
+
+      if (dfs(index + 1, nextValue)) {
+        // console.log('returning true');
+        return true;
+      }
+    }
+    return false;
+  }
+}
