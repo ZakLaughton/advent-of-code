@@ -10,4 +10,20 @@ export function countAntinodes(input: string[]): number {
   // return total count of antinodes
 }
 
-export function getAntennaLocations(grid: string): AntennaLocations {}
+export function getAntennaLocations(grid: string[]): AntennaLocations {
+  const antennaLocations: AntennaLocations = {};
+  for (const [rowIndex, row] of grid.entries()) {
+    let charIndex = 0;
+    for (const char of row) {
+      if (char !== '.') {
+        if (antennaLocations[char] === undefined) {
+          antennaLocations[char] = [];
+        }
+
+        antennaLocations[char].push([rowIndex, charIndex]);
+      }
+      charIndex++;
+    }
+  }
+  return antennaLocations;
+}
